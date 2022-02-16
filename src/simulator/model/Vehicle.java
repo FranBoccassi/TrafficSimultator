@@ -83,30 +83,53 @@ public class Vehicle extends SimulatedObject {
 
     protected void moveToNextRoad(){}
 
-    public​ ​JSONObject​ ​report​() { 
-        ​   ​JSONObject​ jo​=​ ​new​ ​JSONObject​(); 
-        ​   jo​.​put(​"​id​"​, _id); 
-        ​   jo​.​put(​"​speed​"​, vel_actual); 
-        ​   jo​.​put(​"​distance​"​, distanciaT); 
-        ​                jo​.​put(​"​co2​"​, cont_total); 
-        ​                jo​.​put(​"​class​"​,grad_cont); 
-        ​                ​if​(getEstado()​==​VehicleStatus​.​ARRIVED​) { 
-        ​                        jo​.​put(​"​status​"​, ​"​ARRIVED​"​); 
-        ​                } 
-        ​                ​else​ ​if​(getEstado()​==​VehicleStatus​.​PENDING​) { 
-        ​                        jo​.​put(​"​status​"​, ​"​PENDING​"​); 
-        ​                } 
-        ​                ​else​ ​if​(getEstado()​==​VehicleStatus​.​TRAVELING​) { 
-        ​                        jo​.​put(​"​status​"​, ​"​TRAVELING​"​); 
-        ​                } 
-        ​                ​else​ ​if​(getEstado()​==​VehicleStatus​.​WAITING​) { 
-        ​                        jo​.​put(​"​status​"​, ​"​WAITING​"​); 
-        ​                } 
-        ​                ​if​(getEstado()​!=​VehicleStatus​.​ARRIVED​) { 
-        ​                        jo​.​put(​"​road​"​, carretera​.​getId()); 
-        ​                        jo​.​put(​"​location​"​, localizacion); 
-        ​                } 
-        ​                         
-        ​                ​return​ jo;}
+public JSONObject report() {
+		JSONObject jo= new JSONObject();
+		jo.put("id", _id);
+		jo.put("speed", this.maxSpeed);
+		jo.put("distance", this.location);
+		jo.put("co2", this.totalContamination);
+		jo.put("class",this.contaminationGrade);
+		if(this.condition==VehicleStatus.ARRIVED) 
+			jo.put("status", "ARRIVED");
+		else if(this.condition==VehicleStatus.PENDING)
+			jo.put("status", "PENDING");
+		else if(this.condition==VehicleStatus.TRAVELING)
+			jo.put("status", "TRAVELING");
+		else if(this.condition==VehicleStatus.WAITING)
+			jo.put("status", "WAITING");
+		if(this.condition!=VehicleStatus.ARRIVED)
+			jo.put("road", road.getId());
+			jo.put("location", location);
+			
+		return jo;
+	}
+
+    //Getters
+    public int getLocation(){
+        return this.location;
+    }
+    public int getSpeed(){
+        return this.actualSpeed;
+    } 
+    public int getMaxSpeed(){
+        return this.maxSpeed;
+    } 
+    public int getContClass(){
+        return this.contaminationGrade;
+    } 
+    public VehicleStatus getStatus(){
+        return this.condition;
+    } 
+    public int getTotalCO2(){
+        return this.totalContamination;
+    }
+    public List<Junction> getItinerary(){
+        return this.itinerary;
+    }
+    public Road getRoad(){
+        return this.road;
+    }
+
 }
 
