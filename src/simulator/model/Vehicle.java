@@ -83,7 +83,14 @@ public class Vehicle extends SimulatedObject {
 
     protected void moveToNextRoad(){}
 
-public JSONObject report() {
+
+    public void setStatus(VehicleStatus condition){
+        this.condition = condition;
+    }
+
+
+
+    public JSONObject report() {
 		JSONObject jo= new JSONObject();
 		jo.put("id", _id);
 		jo.put("speed", this.maxSpeed);
