@@ -71,13 +71,13 @@ public class Vehicle extends SimulatedObject {
             int l = location - prevLocation;
             int c = l * contaminationGrade;
             totalContamination += c;
-             road.addContamination(c)
+             road.addContamination(c);
             //change Road data.   
 
             if(location >= road.length)
                condition = VehicleStatus.WAITING;
                 actualSpeed = 0;
-                junction.joinQueue(this);
+                itinerary.enter(this);
 
     }
 

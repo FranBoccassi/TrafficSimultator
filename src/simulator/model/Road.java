@@ -17,31 +17,31 @@ public abstract class Road extends SimulatedObject {
     protected int exccessContaminationAlarm;
     protected Weather weather;
     protected int totalContamination;
-    protected List<Vehicle> lVehicles;
+    protected List < Vehicle > lVehicles;
 
     Road(String id, Junction srcJunc, Junction destJunc, int maxSpeed,
         int contLimit, int length, Weather weather) {
         super(id);
         totalContamination = 0;
-        lVehicles = new ArrayList<Vehicle>();
-        if (srcJunc != null)
+        lVehicles = new ArrayList < Vehicle > ();
+        if (srcJunc != null) {
             srcJunc.addOutboundRoad(this);
             origin = srcJunc;
-        else
-            throw new IllegalArgumentException("Origin can't be null");
-        
-        if (destJunc != null)
-            destJunc.addInboundRoad(this);
-            destination = destJunc;
-        else
+        } else
             throw new IllegalArgumentException("Origin can't be null");
 
-        if (maxSpeed > 0)
+        if (destJunc != null) {
+            destJunc.addInboundRoad(this);
+            destination = destJunc;
+        } else
+            throw new IllegalArgumentException("Destiny can't be null");
+
+        if (maxSpeed > 0) {
             this.maxSpeed = maxSpeed;
             speedLimit = maxSpeed;
-        else
+        } else
             throw new IllegalArgumentException("Max Speed must be positive");
-        
+
         if (contLimit >= 0)
             exccessContaminationAlarm = contLimit;
         else
@@ -59,27 +59,27 @@ public abstract class Road extends SimulatedObject {
 
     }
 
-    protected void enter(Vehicle v){
+    protected void enter(Vehicle v) {
         if (v.getLocation() == 0 && v.getSpeed() == 0)
             lVehicles.add(v);
         else
             throw new IllegalArgumentException("Vehicle speed and location must be 0");
     }
 
-    protected void exit(Vehicle v){
-        if(lVehicles.remove(v) == false)
+    protected void exit(Vehicle v) {
+        if (lVehicles.remove(v) == false)
             throw new IllegalArgumentException("This vehicle is not on the Road");
-        
+
     }
 
-    protected void setWeather(Weather w){
+    protected void setWeather(Weather w) {
         if (w != null)
             weather = w;
         else
             throw new IllegalArgumentException("Weather can't be null");
     }
 
-    protected void addContamination(int c){
+    protected void addContamination(int c) {
         if (c >= 0)
             totalContamination += c;
         else
@@ -93,16 +93,16 @@ public abstract class Road extends SimulatedObject {
 
     protected abstract int calculateVehicleSpeed(Vehicle v);
 
-   
+
     @Override
-    protected void advance(int time){
-        if(totalContamination != 0)
+    protected void advance(int time) {
+        if (totalContamination != 0)
             reduceTotalContamination();
-        
+
         updateSpeedLimit();
-        for(int i= 0; i < lVehicles.size(); i++){
-            if(calculateVehicleSpeed(lVehicles.get(i)) > maxSpeed)
-                 lVehicles.get(i).setSpeed(maxSpeed);
+        for (int i = 0; i < lVehicles.size(); i++) {
+            if (calculateVehicleSpeed(lVehicles.get(i)) > maxSpeed)
+                lVehicles.get(i).setSpeed(maxSpeed);
             else
                 lVehicles.get(i).setSpeed(calculateVehicleSpeed(lVehicles.get(i)));
 
@@ -112,27 +112,23 @@ public abstract class Road extends SimulatedObject {
     }
 
     public JSONObject report() {
-        JSONObject jo= new JSONObject();
+        JSONObject jo = new JSONObject();
         jo.put("id", _id);
         jo.put("speedlimit", maxSpeed);
-        if(weather==Weather.CLOUDY) {
-            jo.put("weather","CLOUDY" );
-        }
-        else if(weather==Weather.RAINY) {
-            jo.put("weather","RAINY" );
-        }
-        else if(weather==Weather.STORM) {
-            jo.put("weather","STORM" );
-        }
-        else if(weather==Weather.SUNNY) {
-            jo.put("weather","SUNNY" );
-        }
-        else if(weather==Weather.WINDY) {
-            jo.put("weather","WINDY" );
+        if (weather == Weather.CLOUDY) {
+            jo.put("weather", "CLOUDY");
+        } else if (weather == Weather.RAINY) {
+            jo.put("weather", "RAINY");
+        } else if (weather == Weather.STORM) {
+            jo.put("weather", "STORM");
+        } else if (weather == Weather.SUNNY) {
+            jo.put("weather", "SUNNY");
+        } else if (weather == Weather.WINDY) {
+            jo.put("weather", "WINDY");
         }
         jo.put("co2", totalContamination);
-        JSONArray listV= new JSONArray();
-        for(Vehicle i:lVehicles) {
+        JSONArray listV = new JSONArray();
+        for (Vehicle i: lVehicles) {
             listV.put(i.getId());
         }
         jo.put("vehicles", listV);
@@ -140,34 +136,31 @@ public abstract class Road extends SimulatedObject {
     }
 
 
-    public Junction getOrigin(){
+    public Junction getOrigin() {
         return this.origin;
     }
-    public Junction getDestination(){
+    public Junction getDestination() {
         return this.destination;
     }
-    public int getLength(){
+    public int getLength() {
         return this.length;
     }
-    public int getMaxSpeed(){
+    public int getMaxSpeed() {
         return this.maxSpeed;
     }
-    public int getSpeedLimit(){
+    public int getSpeedLimit() {
         return this.speedLimit;
     }
-    public int getExccessContaminationAlarm(){
-        return this.exccessContaminationAlarm
+    public int getExccessContaminationAlarm() {
+        return this.exccessContaminationAlarm;
     }
-    public Weather getWeather(){
+    public Weather getWeather() {
         return this.weather;
     }
-    public int getTotalContamination(){
+    public int getTotalContamination() {
         return this.totalContamination;
     }
-    public List<Vehicle> getLVehicles(){
+    public List < Vehicle > getLVehicles() {
         return Collections.unmodifiableList(this.lVehicles);
     }
 }
-
-
-
