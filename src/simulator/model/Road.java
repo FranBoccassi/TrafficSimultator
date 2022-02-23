@@ -140,31 +140,31 @@ public abstract class Road extends SimulatedObject {
     }
 
 
-    public void getOrigin(){
+    public Junction getOrigin(){
         return this.origin;
     }
-    public void getDestination(){
+    public Junction getDestination(){
         return this.destination;
     }
-    public void getLength(){
+    public int getLength(){
         return this.length;
     }
-    public void getMaxSpeed(){
+    public int getMaxSpeed(){
         return this.maxSpeed;
     }
-    public void getSpeedLimit(){
+    public int getSpeedLimit(){
         return this.speedLimit;
     }
-    public void getExccessContaminationAlarm(){
+    public int getExccessContaminationAlarm(){
         return this.exccessContaminationAlarm
     }
-    public void getWeather(){
+    public Weather getWeather(){
         return this.weather;
     }
-    public void getTotalContamination(){
+    public int getTotalContamination(){
         return this.totalContamination;
     }
-    public void getLVehicles(){
+    public List<Vehicle> getLVehicles(){
         return Collections.unmodifiableList(this.lVehicles);
     }
 }
