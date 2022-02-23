@@ -137,6 +137,9 @@ public class Vehicle extends SimulatedObject {
     public Road getRoad(){
         return this.road;
     }
+    public String getId(){
+        return this._id;
+    }
 
 }
 
