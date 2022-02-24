@@ -25,13 +25,13 @@ public abstract class Road extends SimulatedObject {
         totalContamination = 0;
         lVehicles = new ArrayList < Vehicle > ();
         if (srcJunc != null) {
-            srcJunc.addOutboundRoad(this);
+            srcJunc.addIncommingRoad(this);
             origin = srcJunc;
         } else
             throw new IllegalArgumentException("Origin can't be null");
 
         if (destJunc != null) {
-            destJunc.addInboundRoad(this);
+            destJunc.addOutGoingRoad(this);
             destination = destJunc;
         } else
             throw new IllegalArgumentException("Destiny can't be null");

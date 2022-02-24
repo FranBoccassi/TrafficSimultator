@@ -125,6 +125,10 @@ public class Junction extends SimulatedObject {
 		jo.put("queues", listT);
 		return jo;
 }
-    
-    
+public List<Road> getRoadList(){
+    return this.roadList;
+}
+public Map<Junction, Road> getRoadMap(){
+    return this.roadMap;
+}    
 }
