@@ -3,7 +3,7 @@ package simulator.model;
 public class NewJunctionEvent extends Event {
 
     private int time;
-	private  String id;
+	private String id;
 	private LightSwitchingStrategy lsStrategy;
 	private DequeuingStrategy dqStrategy;
 	private int xCoor; 
