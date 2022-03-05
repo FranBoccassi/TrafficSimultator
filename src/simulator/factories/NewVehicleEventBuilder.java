@@ -10,7 +10,7 @@ import simulator.model.NewVehicleEvent;
 
 
 
-public class NewVehicleEventBuilder extends Builder<NewVehicleEvent> {	
+public class NewVehicleEventBuilder extends Builder<Event> {	
 	public NewVehicleEventBuilder() {
 		super("new_vehicle");
 	}

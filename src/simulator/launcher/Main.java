@@ -1,6 +1,14 @@
 package simulator.launcher;
-
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
 import org.apache.commons.cli.DefaultParser;
@@ -9,8 +17,24 @@ import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
 
+import simulator.control.Controller;
+import simulator.factories.Builder;
+import simulator.factories.BuilderBasedFactory;
 import simulator.factories.Factory;
+import simulator.factories.MostCrowdedStrategyBuilder;
+import simulator.factories.MoveAllStrategyBuilder;
+import simulator.factories.MoveFirstStrategyBuilder;
+import simulator.factories.NewCityRoadEventBuilder;
+import simulator.factories.NewInterCityRoadEventBuilder;
+import simulator.factories.NewJunctionEventBuilder;
+import simulator.factories.NewVehicleEventBuilder;
+import simulator.factories.RoundRobinStrategyBuilder;
+import simulator.factories.SetContClassEventBuilder;
+import simulator.factories.SetWeatherEventBuilder;
+import simulator.model.DequeuingStrategy;
 import simulator.model.Event;
+import simulator.model.LightSwitchingStrategy;
+import simulator.model.TrafficSimulator;
 
 public class Main {
 
@@ -84,12 +108,43 @@ public class Main {
 
 	private static void initFactories() {
 
-		// TODO complete this method to initialize _eventsFactory
+		// se creanlas estrategiasde cambiode semáforo 
+		ArrayList<Builder<LightSwitchingStrategy>> lsbs = new ArrayList<>();
+		lsbs.add(new RoundRobinStrategyBuilder());
+		lsbs.add(new MostCrowdedStrategyBuilder());
+		Factory<LightSwitchingStrategy> lssFactory= new BuilderBasedFactory<>(lsbs);
+		
+		// se creanlas estrategiasde extracciónde la cola 
+		ArrayList<Builder<DequeuingStrategy>> dqbs = new ArrayList<>(); 
+		dqbs.add(new MoveFirstStrategyBuilder()); 
+		dqbs.add(new MoveAllStrategyBuilder()); 
+		Factory<DequeuingStrategy> dqsFactory = new BuilderBasedFactory<>(dqbs);
+		
+		// se creala listade builders 
+		List<Builder<Event>> eventBuilders= new ArrayList<>(); 
+		eventBuilders.add(new NewJunctionEventBuilder(lssFactory, dqsFactory)); 
+		eventBuilders.add(new NewCityRoadEventBuilder(lssFactory, dqsFactory)); 
+		eventBuilders.add(new NewVehicleEventBuilder ()); 
+		eventBuilders.add(new NewInterCityRoadEventBuilder(lssFactory, dqsFactory)); 
+		eventBuilders.add(new SetContClassEventBuilder()); 
+		eventBuilders.add(new SetWeatherEventBuilder()); 
+		//...
+		 _eventsFactory = new BuilderBasedFactory<>(eventBuilders);
 
 	}
 
 	private static void startBatchMode() throws IOException {
-		// TODO complete this method to start the simulation
+		
+		InputStream in = new FileInputStream(new File(_inFile));
+		OutputStream out= _outFile == null ? 
+		System.out : new FileOutputStream(new File(_outFile)); 
+		TrafficSimulator sim = new TrafficSimulator(); 
+		Controller ctrl= new Controller(sim, _eventsFactory); 
+		
+		ctrl.loadEvents(in); 
+		ctrl.run(_timeLimitDefaultValue, out); 
+		in.close();
+		System.out.println("Done!");
 	}
 
 	private static void start(String[] args) throws IOException {

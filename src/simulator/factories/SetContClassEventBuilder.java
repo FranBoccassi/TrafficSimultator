@@ -11,7 +11,7 @@ import simulator.model.Event;
 import simulator.model.NewSetContClassEvent;
 import simulator.model.SetWeatherEvent;
 
-public class SetContClassEventBuilder extends Builder<NewSetContClassEvent> {
+public class SetContClassEventBuilder extends Builder<Event> {
 	public SetContClassEventBuilder() {
 		super("set_cont_class");
 		// TODO Auto-generated constructor stub
