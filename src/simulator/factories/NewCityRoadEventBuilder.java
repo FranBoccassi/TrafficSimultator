@@ -9,8 +9,8 @@ import simulator.model.Weather;
 
 public class NewCityRoadEventBuilder extends  NewRoadEventBuilder{
 
-    public NewCityRoadEventBuilder(Factory<LightSwitchingStrategy> lssFactory, Factory<DequeuingStrategy> dqsFactory) {
-        super("new_city_road",lssFactory,dqsFactory);
+    public NewCityRoadEventBuilder() {
+        super("new_city_road");
 
     }
 	@Override

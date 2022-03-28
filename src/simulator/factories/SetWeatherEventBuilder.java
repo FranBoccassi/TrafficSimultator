@@ -14,7 +14,6 @@ import simulator.model.Weather;
 public class SetWeatherEventBuilder extends Builder<Event> {
 	public SetWeatherEventBuilder() {
 		super("set_weather");
-		// TODO Auto-generated constructor stub
 	}
 	    @Override
 	    protected SetWeatherEvent createTheInstance(JSONObject data) {
@@ -26,7 +25,6 @@ public class SetWeatherEventBuilder extends Builder<Event> {
 	    		list.add(new Pair<String,Weather>(pair.getString("road"), w));
 	    	}
 	    	SetWeatherEvent e= new SetWeatherEvent(data.getInt("time"),list);
-
 	    return e;
 	}
 }

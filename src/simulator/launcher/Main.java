@@ -39,6 +39,8 @@ import simulator.model.TrafficSimulator;
 public class Main {
 
 	private final static Integer _timeLimitDefaultValue = 10;
+	private static Integer _timeLimit = null;
+	private static String time = null;
 	private static String _inFile = null;
 	private static String _outFile = null;
 	private static Factory<Event> _eventsFactory = null;
@@ -57,6 +59,7 @@ public class Main {
 			parseHelpOption(line, cmdLineOptions);
 			parseInFileOption(line);
 			parseOutFileOption(line);
+			parseTime(line);
 
 			// if there are some remaining arguments, then something wrong is
 			// provided in the command line!
@@ -83,7 +86,7 @@ public class Main {
 		cmdLineOptions.addOption(
 				Option.builder("o").longOpt("output").hasArg().desc("Output file, where reports are written.").build());
 		cmdLineOptions.addOption(Option.builder("h").longOpt("help").desc("Print this message").build());
-
+		cmdLineOptions.addOption(Option.builder("t").longOpt("time").hasArg().desc(" Ticks to the simulatorís main loop (default value is 10).").build());
 		return cmdLineOptions;
 	}
 
@@ -105,16 +108,24 @@ public class Main {
 	private static void parseOutFileOption(CommandLine line) throws ParseException {
 		_outFile = line.getOptionValue("o");
 	}
-
+	private static void parseTime(CommandLine line) throws ParseException {
+		time = line.getOptionValue("t");
+		if (time == null) {
+			_timeLimit=_timeLimitDefaultValue;
+		}
+		else {
+			_timeLimit=Integer.parseInt(time);
+		}
+	}
 	private static void initFactories() {
 
-		// se creanlas estrategiasde cambiode sem√°foro 
+		// se creanlas estrategiasde cambiode sem·foro 
 		ArrayList<Builder<LightSwitchingStrategy>> lsbs = new ArrayList<>();
 		lsbs.add(new RoundRobinStrategyBuilder());
 		lsbs.add(new MostCrowdedStrategyBuilder());
 		Factory<LightSwitchingStrategy> lssFactory= new BuilderBasedFactory<>(lsbs);
 		
-		// se creanlas estrategiasde extracci√≥nde la cola 
+		// se creanlas estrategiasde extracciÛnde la cola 
 		ArrayList<Builder<DequeuingStrategy>> dqbs = new ArrayList<>(); 
 		dqbs.add(new MoveFirstStrategyBuilder()); 
 		dqbs.add(new MoveAllStrategyBuilder()); 
@@ -123,15 +134,15 @@ public class Main {
 		// se creala listade builders 
 		List<Builder<Event>> eventBuilders= new ArrayList<>(); 
 		eventBuilders.add(new NewJunctionEventBuilder(lssFactory, dqsFactory)); 
-		eventBuilders.add(new NewCityRoadEventBuilder(lssFactory, dqsFactory)); 
+		eventBuilders.add(new NewCityRoadEventBuilder()); 
 		eventBuilders.add(new NewVehicleEventBuilder ()); 
-		eventBuilders.add(new NewInterCityRoadEventBuilder(lssFactory, dqsFactory)); 
+		eventBuilders.add(new NewInterCityRoadEventBuilder()); 
 		eventBuilders.add(new SetContClassEventBuilder()); 
 		eventBuilders.add(new SetWeatherEventBuilder()); 
 		//...
 		 _eventsFactory = new BuilderBasedFactory<>(eventBuilders);
+        	}
 
-	}
 
 	private static void startBatchMode() throws IOException {
 		
@@ -142,7 +153,7 @@ public class Main {
 		Controller ctrl= new Controller(sim, _eventsFactory); 
 		
 		ctrl.loadEvents(in); 
-		ctrl.run(_timeLimitDefaultValue, out); 
+		ctrl.run(_timeLimit, out); 
 		in.close();
 		System.out.println("Done!");
 	}

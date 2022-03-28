@@ -9,18 +9,16 @@ public class NewSetContClassEvent extends Event{
 
 	public NewSetContClassEvent(int time, List<Pair<String,Integer>> cs) {
 		super(time);
-		if(cs==null) {
+		if(cs==null) 
 			throw new IllegalArgumentException("The cont class list is empty"); 
-		}
-		else {
+		else 
 			this.cs=new ArrayList<Pair<String,Integer>>(cs);
-		}
 		}
 
 	@Override
 	void execute(RoadMap map) {
 		for(int i=0;i<cs.size();i++) {
-			map.getVehicle(cs.get(i).getFirst()).setContaminationClass(cs.get(i).getSecond());
+			map.getVehicle(cs.get(i).getFirst()).setContClass(cs.get(i).getSecond());
 		}
 	}
 

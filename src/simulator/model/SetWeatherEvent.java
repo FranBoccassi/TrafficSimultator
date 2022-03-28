@@ -20,7 +20,6 @@ public class SetWeatherEvent extends Event {
 	@Override
 	void execute(RoadMap map) {
 		for(int i=0;i<ws.size();i++)
-        //TODO poner excepcion si no existe la carretera
 			map.getRoad(ws.get(i).getFirst()).setWeather(ws.get(i).getSecond());
 	}
     

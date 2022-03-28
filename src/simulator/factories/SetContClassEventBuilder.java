@@ -14,7 +14,6 @@ import simulator.model.SetWeatherEvent;
 public class SetContClassEventBuilder extends Builder<Event> {
 	public SetContClassEventBuilder() {
 		super("set_cont_class");
-		// TODO Auto-generated constructor stub
 	}
 	    @Override
 	    protected NewSetContClassEvent createTheInstance(JSONObject data) {
@@ -25,7 +24,6 @@ public class SetContClassEventBuilder extends Builder<Event> {
 	    		list.add(new Pair<String,Integer>(pair.getString("vehicle"),(Integer) pair.get("class")));
 	    	}
 	    	NewSetContClassEvent e= new NewSetContClassEvent(data.getInt("time"),list);
-
 	    return e;
 	}
 }

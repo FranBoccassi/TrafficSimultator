@@ -8,7 +8,7 @@ import simulator.model.Weather;
 
 public abstract class NewRoadEventBuilder extends Builder<Event> {
 
-    public NewRoadEventBuilder(String s, Factory<LightSwitchingStrategy> lssFactory, Factory<DequeuingStrategy> dqsFactory) {
+    public NewRoadEventBuilder(String s) {
         super(s);
     }
     abstract Event crearI(JSONObject data,Weather w);
