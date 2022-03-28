@@ -5,11 +5,12 @@ import java.util.List;
 
 import org.json.JSONObject;
 // mirar el onError
-public class TrafficSimulator{
+public class TrafficSimulator implements Observable<TrafficSimObserver> {
  
     private RoadMap mapRoad;
     private List<Event> listEvent;
     private int timeSimulation;
+	private List<TrafficSimObserver> listOb;
 
 	public TrafficSimulator() {
 		timeSimulation=0;
@@ -53,5 +54,16 @@ public class TrafficSimulator{
 		jo.put("time", timeSimulation);
 		jo.put("state", mapRoad.report());
 	return jo;
+	}
+
+	@Override
+	public void addObserver(TrafficSimObserver o) {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public void removeObserver(TrafficSimObserver o) {
+		// TODO Auto-generated method stub
+		
 	}
 }
